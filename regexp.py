@@ -1,14 +1,26 @@
 import re
 
+
 """
-.   any single charakter
-+   one or more time repeated
-*   zero or more times repeated
-^   begining of the line (string - matching pattern)
-$   end of the line ( matching pattern )
-\s  whitespace
-\d  digit (number )
-\S  non-whitespace
+.   - any single charakter except new line 
++   - 1 or More  one or more time repeated
+*   - 0 or More zero or more times repeated
+?   - 0 or One 
+{3} - exact number 
+{3,9}  - range of numbers ( Minimum , Maximum )
+^   - begining of the line (string - matching pattern)
+$   - end of the line ( matching pattern )
+[]  - Matches character in brackets 
+[^] - Matches charackters NOT in brackets 
+\s  - whitespace
+\S  - NOT whitespace ( TAB , space , newline )
+\d  - digit (number 0-9)
+\D  - NOT a Digit (0-9)
+\w  - Word character (a-z , A-Z ,0-9, _ )
+\W  - NOT a Word character 
+\b  - Word Boundary 
+\B  - Not a Word Boundary 
+
 
 
 usage:  re.search (r"regexp" , text_file)
@@ -29,7 +41,7 @@ re.search(r"\s+\S+", ip)   # '    192.168.1.5'  match whitespace i nonwhitespace
 text = "Cisco IOS software, C880 Software , Version 15.4(2)T1, Release"
 
 #Group 0  .group(0) matchuje ceo string , sve sto se match-uje "^C.*$
-re.search(r"^C.*$, text").group(0)  #match='Cisco IOS software, C880 Software , Version 15.4
+re.search(r"^C.*$", text).group(0)  #match='Cisco IOS software, C880 Software , Version 15.4
 
 #Group 1 (2,3,4 ... ) matchuje samo ono sto je u zagradi () i sluzi da se EXTRAKTUJE NESTO iz stringa
 
@@ -40,7 +52,7 @@ re.search(r"^Cisco (.*), Version (\S+),.*$", text ).group(1) # 'IOS software, C8
 re.search(r"^Cisco (.*), Version (\S+),.*$", text ).group(2) # '15.4(2)T1'   ( sada je ovo druga zagrada )
 
 # EXTRACT I STAVI U DICTIONARY VALUE , KEY SAM IMENUJES  (?P<dict_key_name> regexp_match )  regexp_match je value
- os = re.search(r"^Cisco (.*), Version (?P<dict_key>\S+),.*$", text ).groupdict()  # os = {'dict_key': '15.4(2)T1'}
+os = re.search(r"^Cisco (.*), Version (?P<dict_key>\S+),.*$", text ).groupdict()  # os = {'dict_key': '15.4(2)T1'}
 # type(os) <class 'dict'>   # os je dictionary
 
 #ili
@@ -75,5 +87,19 @@ re.search(r"^Cisco.*", text , flags=re.DOTALL)  # za multiline string
 
 ## REPLACE PATERN with regexp re.sub
 
-re.split(r"---------.*$", '############', text1, flags=re.M)   # menjamo ----- with #####
+#re.split(r"---------.*$", '############', text1, flags=re.M)   # menjamo ----- with #####
 
+# primer
+text = 'vrf definition POLICE'
+pattern = r'vrf\s+definition\s+(?P<vrf_name>\S+)'   # name to capture group (?P<vrf_name>\S+) - (<vrf_name> dict key ,value is match)
+match = re.search(pattern, text)       # nadji pattern u  textu
+if match:
+    print (match.groupdict())        # {'vrf_name': 'POLICE'}
+
+
+# Corey Shaver video regex odlicno https://www.youtube.com/watch?v=K8L6KVGG-7o&list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU&index=30
+
+pat1 = re.compile(r'\d{3}.\d{3}.\d{4}')   # 3 ,4 broj digita \3{3} = \d\d\d
+
+
+pat2 = re.compile(r'https?://(www\.)?')  # ?     posle nekog znaka kaze da je on opcionalan ( 0 or 1 ) match http i https , www ili empty

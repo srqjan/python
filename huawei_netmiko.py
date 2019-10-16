@@ -26,3 +26,12 @@ print(output_show_command)
 
 #print(output_send_command[0])# {'protocol': 'Internet', 'address': '91.102.229.241', 'age': '0', 'mac': '0025.9e99.409f', 'type': 'ARPA', 'interface': 'GigabitEthernet0/1'
 
+#Slanje vise komandi odjednom
+commands = ["dis ip int brief | inc 1146", "dis bgp peer", "dis ospf peer brief"]
+
+command_0 = commands[0]  # dis ip int brief
+
+for command in commands:
+    output = net_conn.send_command(command)
+    print(output)
+

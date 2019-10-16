@@ -1,6 +1,6 @@
 from netmiko import Netmiko
 my_dev = {
-    'host': 'olt',                                    # olt
+    'host': 'olt-za',                                    # olt
     'username':'srdjan',
     'password': 'Srdjan84',
     'device_type': 'eltex'
@@ -22,3 +22,15 @@ output_show_command = net_conn.send_command(cfg, use_textfsm=True)  # NE RADI NA
 # TextFSM vraca structured data ( list of dictionary )
 print(type(output_show_command))
 print(output_show_command)
+
+
+#Slanje vise komandi odjednom
+commands = ["show int ont 0/0 connected ", "show firmware", "show int ont 0/1/4 state"]
+
+command_0 = commands[0]  #show int ont 0/0 connected
+
+for command in commands:
+    output = net_conn.send_command(command)
+    print(output)
+
+

@@ -25,7 +25,7 @@ print(output_send_command)
 print(output_send_command[0])# {'protocol': 'Internet', 'address': '91.102.229.241', 'age': '0', 'mac': '0025.9e99.409f', 'type': 'ARPA', 'interface': 'GigabitEthernet0/1'
 
 # slanje vise komandi odjednom
-commands = ['show ip route', 'show arp', 'ping 8.8.8.8']
+commands = ['show ip route', 'show ip int br', 'ping 8.8.4.4']
 for command in commands:
     output = net_conn.send_command(command)
     print(output)
